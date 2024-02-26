@@ -22,9 +22,8 @@ function Portfolio() {
 
   const changeLanguage = (event) => {
     const selectedLanguage = event.target.value;
-    console.log(28, selectedLanguage);
     i18n.changeLanguage(selectedLanguage);
-    
+    localStorage.setItem("i18nextLng", selectedLanguage);
   };
 
  
@@ -34,14 +33,20 @@ function Portfolio() {
     if (savedDarkMode !== null) {
       setDarkMode(savedDarkMode);
     }
-  }, []);
+  }, [18n.language]);
 
 
-
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem("i18nextLng");
+    if (storedLanguage && i18n.language !== storedLanguage) {
+      i18n.changeLanguage(storedLanguage);
+    }
+  }, [i18n]);
  
   
   useEffect(() => {
     const savedLanguage = JSON.parse(localStorage.getItem('language'));
+   
     if (savedLanguage !== null) {
       setLanguage(savedLanguage);
     }
@@ -90,7 +95,7 @@ function Portfolio() {
         <div className="hero">
             <div className="hero-text">
                 <h1>
-                   {t("Hi")} <span><img width="90" src={emoji} alt="" /></span>
+                   {t("hero.greeting")} <span><img width="90" src={emoji} alt="" /></span>
                     <br />  {t("hero.name")} <br /> {t("hero.role")}
                 </h1> <br /> <br />
 
